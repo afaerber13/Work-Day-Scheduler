@@ -1,8 +1,3 @@
-// Define variables
-var timeBlockEl = document.querySelector(".containter");
-var timeBlock = $(".hour");
-var parent = $(this).parents(".row");
-var currentTime = parseInt(dayjs().format("H"));
 // Current date
 const currentDay = dayjs();
 const formattedDay = currentDay.format('YYYY-MM-DD HH:mm:ss');
@@ -10,26 +5,42 @@ console.log(formattedDay);
 
 $("#currentDay").text(dayjs().format('dddd, MMMM DD YYYY'));
 
+// Define variables
+var timeBlockEl = document.querySelector(".containter");
+var timeBlock = $(".hour");
+var parent = $(this).parents(".row");
+var currentTime = parseInt(dayjs().format("H"));
+
 
 // Functions
-function timeTracker(){
-    $(".time-block").each(function (){
+function auditTask(){
+   
+    $(".time-block").each(function (){  
     var hourId = parseInt(parent.attr("id"));
     if(hourId < currentTime){
       $(this).addClass ("past");
     }
     else if(hourId === currentTime){
+      $(this).removeClass('past');
+      $(this).removeClass('future');
       $(this).addClass ("present");
     }
     else{
-           $(this).addClass ("future");
+      $(this).removeClass('past');
+      $(this).removeClass('present');
+      $(this).addClass ("future");
     }
   })
 }
 
+auditTask();
+
 // Event listener for saveBtn
 $(".saveBtn").on("click", function(){
-})
+  var textValue = $(this).siblings('.description').val();
+  var timeKey = $(this).parent().attr('id');
+  localStorage.setItem(timeKey, textValue);
+});
 
 // Get item from local storage
 $("#hour-9 .description").val(localStorage.getItem("hour-9"));
@@ -42,5 +53,5 @@ $("#hour-15 .description").val(localStorage.getItem("hour-15"));
 $("#hour-16 .description").val(localStorage.getItem("hour-16"));
 $("#hour-17 .description").val(localStorage.getItem("hour-17"));
 
-timeTracker();
+
 
